@@ -22,6 +22,7 @@ negative <- subset(dat, airline_sentiment == "negative")
 
 wordsToRemove = c('get', 'cant', 'can', 'now', 'just', 'will', 'dont', 'ive', 'got', 'much')
 
+# Function to clean data and convert text to document term matrix
 wc <- function(documents){
   corpusnew <- Corpus(VectorSource(documents))
   corpusnew <- tm_map(corpusnew,content_transformer(tolower))
@@ -34,30 +35,36 @@ wc <- function(documents){
   return(dt)
 }
 
+# Negative sentiment
 opt <- wc(negative$text)
 words <- colnames(opt)
 freq_neg <- colSums(opt)
 
+# Plotting wordcloud
 png("twitter1.png")
 wordcloud(words,freq_neg,min.freq = sort(freq_neg, decreasing = TRUE)[[300]],random.order = FALSE,
           random.color = TRUE, colors = brewer.pal(8, "Dark2"))
 
 dev.off()
 
+# Neutral sentiment
 opt <- wc(neutral$text)
 words <- colnames(opt)
 freq_neu <- colSums(opt)
 
+# Plotting wordcloud
 png("twitter2.png")
 wordcloud(words,freq_neu,min.freq = sort(freq_neu, decreasing = TRUE)[[300]],random.order = FALSE,
           random.color = TRUE, colors = brewer.pal(8, "Dark2"))
 
 dev.off()
 
+# Positive sentiment
 opt <- wc(positive$text)
 words <- colnames(opt)
 freq_pos <- colSums(opt)
 
+# Plotting wordcloud
 png("twitter3.png")
 wordcloud(words,freq_pos,min.freq = sort(freq_pos, decreasing = TRUE)[[300]],random.order = FALSE,
           random.color = TRUE, colors = brewer.pal(8, "Dark2"))
